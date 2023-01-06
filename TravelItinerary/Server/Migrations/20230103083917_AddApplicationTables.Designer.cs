@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TravelItinerary.Server.Data;
 
-namespace TravelItinerary.Server.Data.Migrations
+namespace TravelItinerary.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221211151859_AddedNameToUser")]
-    partial class AddedNameToUser
+    [Migration("20230103083917_AddApplicationTables")]
+    partial class AddApplicationTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -330,6 +330,261 @@ namespace TravelItinerary.Server.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("TravelItinerary.Shared.Domain.Accommodation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AccommodationFees")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AccommodationLocation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AccommodationName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("AccommodationRating")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AccommodationType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FligAccoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MyProperty")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("TripId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FligAccoId");
+
+                    b.HasIndex("TripId");
+
+                    b.ToTable("Accommodations");
+                });
+
+            modelBuilder.Entity("TravelItinerary.Shared.Domain.Customer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Alias")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Customers");
+                });
+
+            modelBuilder.Entity("TravelItinerary.Shared.Domain.Event", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EventDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EventLocation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EventTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ScheduleId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ScheduleId");
+
+                    b.ToTable("Events");
+                });
+
+            modelBuilder.Entity("TravelItinerary.Shared.Domain.FligAcco", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("PaymentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaymentId");
+
+                    b.ToTable("FligAccos");
+                });
+
+            modelBuilder.Entity("TravelItinerary.Shared.Domain.Flight", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Airlines")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Baggage")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CabinClass")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DestinationFrom")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DestinationTo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FligAccoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FlighFees")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FlightRating")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("TripId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FligAccoId");
+
+                    b.HasIndex("TripId");
+
+                    b.ToTable("Flights");
+                });
+
+            modelBuilder.Entity("TravelItinerary.Shared.Domain.Payment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PaymentAmount")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("TravelItinerary.Shared.Domain.Schedule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TripId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TripId");
+
+                    b.ToTable("Schedules");
+                });
+
+            modelBuilder.Entity("TravelItinerary.Shared.Domain.Trip", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Destination")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Pax")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("Trips");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -379,6 +634,95 @@ namespace TravelItinerary.Server.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("TravelItinerary.Shared.Domain.Accommodation", b =>
+                {
+                    b.HasOne("TravelItinerary.Shared.Domain.FligAcco", "FligAcco")
+                        .WithMany()
+                        .HasForeignKey("FligAccoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TravelItinerary.Shared.Domain.Trip", "Trip")
+                        .WithMany()
+                        .HasForeignKey("TripId");
+
+                    b.Navigation("FligAcco");
+
+                    b.Navigation("Trip");
+                });
+
+            modelBuilder.Entity("TravelItinerary.Shared.Domain.Event", b =>
+                {
+                    b.HasOne("TravelItinerary.Shared.Domain.Schedule", "Schedule")
+                        .WithMany()
+                        .HasForeignKey("ScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Schedule");
+                });
+
+            modelBuilder.Entity("TravelItinerary.Shared.Domain.FligAcco", b =>
+                {
+                    b.HasOne("TravelItinerary.Shared.Domain.Payment", "Payment")
+                        .WithMany()
+                        .HasForeignKey("PaymentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Payment");
+                });
+
+            modelBuilder.Entity("TravelItinerary.Shared.Domain.Flight", b =>
+                {
+                    b.HasOne("TravelItinerary.Shared.Domain.FligAcco", "FligAcco")
+                        .WithMany()
+                        .HasForeignKey("FligAccoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TravelItinerary.Shared.Domain.Trip", "Trip")
+                        .WithMany()
+                        .HasForeignKey("TripId");
+
+                    b.Navigation("FligAcco");
+
+                    b.Navigation("Trip");
+                });
+
+            modelBuilder.Entity("TravelItinerary.Shared.Domain.Payment", b =>
+                {
+                    b.HasOne("TravelItinerary.Shared.Domain.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("TravelItinerary.Shared.Domain.Schedule", b =>
+                {
+                    b.HasOne("TravelItinerary.Shared.Domain.Trip", "Trip")
+                        .WithMany()
+                        .HasForeignKey("TripId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Trip");
+                });
+
+            modelBuilder.Entity("TravelItinerary.Shared.Domain.Trip", b =>
+                {
+                    b.HasOne("TravelItinerary.Shared.Domain.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
                 });
 #pragma warning restore 612, 618
         }
