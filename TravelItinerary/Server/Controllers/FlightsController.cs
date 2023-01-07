@@ -31,7 +31,7 @@ namespace TravelItinerary.Server.Controllers
         public async Task<IActionResult> GetFlights()
         {
             //return await _context.Customers.ToListAsync();
-            var flights = await _unitOfWork.Flights.GetAll();
+            var flights = await _unitOfWork.Flights.GetAll(includes: q => q.Include(x =>x.FligAcco).Include(x => x.Trip));
             return Ok(flights);
         }
 

@@ -1,0 +1,66 @@
+﻿@page "/schedules/"
+@inject HttpClient _client
+@inject IJSRuntime js
+@attribute [Authorize]
+
+<h3 class="card-title">Schedule Makes</h3>
+<br />
+
+@if (Schedules == null)
+{
+    <div class="alert alert-info">Loading Schedules...</div>
+}
+else
+{
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>Schedule Start Date</th>
+                <th>Schedule End Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var schedule in Schedules)
+            {
+                <tr>
+                    <td>@schedule.StartDate</td>
+                    <td>@schedule.EndDate</td>
+                    <td>
+                        <a href="/customers/view/@schedule.Id" class="btn btn-primary">
+                            <span class="oi oi-book"></span>
+                        </a>
+                        <a href="/customers/edit/@schedule.Id" class="btn btn-warning">
+                            <span class="oi oi-pencil"></span>
+                        </a>
+                        <button class="btn btn-danger" @onclick="@(()=>Delete(schedule.Id))">
+                            <span class="oi oi-delete"></span>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    private List<Schedule> Schedules;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Schedules = await _client.GetFromJsonAsync<List<Schedule>>($"{Endpoints.SchedulesEndpoint}");
+    }
+
+    async Task Delete(int scheduleId)
+    {
+        var schedule = Schedules.First(q => q.Id == scheduleId);
+        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {schedule.StartDate}?");
+        if (confirm)
+        {
+            await _client.DeleteAsync($"{Endpoints.SchedulesEndpoint}/{scheduleId}");
+            await OnInitializedAsync();
+        }
+    }
+
+}
