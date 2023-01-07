@@ -6,6 +6,13 @@
 <h3 class="card-title">Schedule Makes</h3>
 <br />
 
+<a href="/schedules/create" class="btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Create New Schedule
+</a>
+<br />
+<br />
+
 @if (Schedules == null)
 {
     <div class="alert alert-info">Loading Schedules...</div>
@@ -15,6 +22,8 @@ else
     <table class="table table-responsive">
         <thead>
             <tr>
+                <th>Schedule Id</th>
+                <th>Destination</th>
                 <th>Schedule Start Date</th>
                 <th>Schedule End Date</th>
                 <th>Actions</th>
@@ -24,13 +33,15 @@ else
             @foreach (var schedule in Schedules)
             {
                 <tr>
-                    <td>@schedule.StartDate</td>
-                    <td>@schedule.EndDate</td>
+                    <td>@schedule.TripId</td>
+                    <th>@schedule.Trip.Destination</th>
+                    <td>@schedule.StartDate.Date.ToString("dd MMMM yyyy")</td>
+                    <td>@schedule.EndDate.Date.ToString("dd MMMM yyyy")</td>
                     <td>
-                        <a href="/customers/view/@schedule.Id" class="btn btn-primary">
+                        <a href="/schedules/view/@schedule.Id" class="btn btn-primary">
                             <span class="oi oi-book"></span>
                         </a>
-                        <a href="/customers/edit/@schedule.Id" class="btn btn-warning">
+                        <a href="/schedules/edit/@schedule.Id" class="btn btn-warning">
                             <span class="oi oi-pencil"></span>
                         </a>
                         <button class="btn btn-danger" @onclick="@(()=>Delete(schedule.Id))">

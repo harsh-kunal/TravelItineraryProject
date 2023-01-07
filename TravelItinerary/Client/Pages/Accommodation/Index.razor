@@ -6,6 +6,13 @@
 <h3 class="card-title">Hotel Makes</h3>
 <br />
 
+<a href="/accommodations/create" class="btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Create New Accommodations
+</a>
+<br />
+<br />
+
 @if (Accommodations == null)
 {
     <div class="alert alert-info">Loading Hotels...</div>
@@ -25,23 +32,23 @@ else
         <tbody>
             @foreach (var accommodation in Accommodations)
             {
-            <tr>
-                <td>@accommodation.StartDate</td>
-                <td>@accommodation.EndDate</td>
-                <td>@accommodation.AccommodationFees</td>
-                <td>@accommodation.AccommodationLocation</td>
-                <td>
-                    <a href="/customers/view/@accommodation.Id" class="btn btn-primary">
-                        <span class="oi oi-book"></span>
-                    </a>
-                    <a href="/customers/edit/@accommodation.Id" class="btn btn-warning">
-                        <span class="oi oi-pencil"></span>
-                    </a>
-                    <button class="btn btn-danger" @onclick="@(()=>Delete(accommodation.Id))">
-                        <span class="oi oi-delete"></span>
-                    </button>
-                </td>
-            </tr>
+                <tr>
+                    <td>@accommodation.StartDate</td>
+                    <td>@accommodation.EndDate</td>
+                    <td>@accommodation.AccommodationFees</td>
+                    <td>@accommodation.AccommodationLocation</td>
+                    <td>
+                        <a href="/accommodations/view/@accommodation.Id" class="btn btn-primary">
+                            <span class="oi oi-book"></span>
+                        </a>
+                        <a href="/accommodations/edit/@accommodation.Id" class="btn btn-warning">
+                            <span class="oi oi-pencil"></span>
+                        </a>
+                        <button class="btn btn-danger" @onclick="@(()=>Delete(accommodation.Id))">
+                            <span class="oi oi-delete"></span>
+                        </button>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

@@ -6,6 +6,13 @@
 <h3 class="card-title">Customer Makes</h3>
 <br />
 
+<a href="/customers/create" class="btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Create New Customers
+</a>
+<br />
+<br />
+
 @if (Customers == null)
 {
     <div class="alert alert-info">Loading Customers...</div>
@@ -15,6 +22,7 @@ else
     <table class="table table-responsive">
         <thead>
             <tr>
+                <th>Customer Id</th>
                 <th>Name</th>
                 <th>Alias</th>
                 <th>Phone Number</th>
@@ -26,6 +34,7 @@ else
             @foreach (var customer in Customers)
             {
                 <tr>
+                    <th>@customer.Id</th>
                     <td>@customer.Name</td>
                     <td>@customer.Alias</td>
                     <td>@customer.PhoneNumber</td>
@@ -65,8 +74,6 @@ else
             await _client.DeleteAsync($"{Endpoints.CustomersEndpoint}/{customerId}");
             await OnInitializedAsync();
         }
-
-
     }
 
 }

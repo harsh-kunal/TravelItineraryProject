@@ -6,6 +6,13 @@
 <h3 class="card-title">Flight Makes</h3>
 <br />
 
+<a href="/flights/create" class="btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Create New Flights
+</a>
+<br />
+<br />
+
 @if (Flights == null)
 {
     <div class="alert alert-info">Loading Flightss...</div>
@@ -28,26 +35,26 @@ else
         <tbody>
             @foreach (var flight in Flights)
             {
-            <tr>
-                <td>@flight.Airlines</td>
-                <td>@flight.DestinationFrom</td>
-                <td>@flight.DestinationTo</td>
-                <td>@flight.StartDate</td>
-                <td>@flight.EndDate</td>
-                <td>@flight.CabinClass</td>
-                <td>@flight.FlighFees</td>
-                <td>
-                    <a href="/customers/view/@flight.Id" class="btn btn-primary">
-                        <span class="oi oi-book"></span>
-                    </a>
-                    <a href="/customers/edit/@flight.Id" class="btn btn-warning">
-                        <span class="oi oi-pencil"></span>
-                    </a>
-                    <button class="btn btn-danger" @onclick="@(()=>Delete(flight.Id))">
-                        <span class="oi oi-delete"></span>
-                    </button>
-                </td>
-            </tr>
+                <tr>
+                    <td>@flight.Airlines</td>
+                    <td>@flight.DestinationFrom</td>
+                    <td>@flight.DestinationTo</td>
+                    <td>@flight.StartDate</td>
+                    <td>@flight.EndDate</td>
+                    <td>@flight.CabinClass</td>
+                    <td>@flight.FlighFees</td>
+                    <td>
+                        <a href="/flights/view/@flight.Id" class="btn btn-primary">
+                            <span class="oi oi-book"></span>
+                        </a>
+                        <a href="/flights/edit/@flight.Id" class="btn btn-warning">
+                            <span class="oi oi-pencil"></span>
+                        </a>
+                        <button class="btn btn-danger" @onclick="@(()=>Delete(flight.Id))">
+                            <span class="oi oi-delete"></span>
+                        </button>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

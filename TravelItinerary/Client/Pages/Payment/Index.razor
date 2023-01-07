@@ -6,6 +6,13 @@
 <h3 class="card-title">Payment Makes</h3>
 <br />
 
+<a href="/payments/create" class="btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Create New Payments
+</a>
+<br />
+<br />
+
 @if (Payments == null)
 {
     <div class="alert alert-info">Loading Payments...</div>
@@ -29,10 +36,10 @@ else
                     <td>@payment.PaymentType</td>
                     <td>@payment.PaymentDate</td>
                     <td>
-                        <a href="/customers/view/@payment.Id" class="btn btn-primary">
+                        <a href="/payments/view/@payment.Id" class="btn btn-primary">
                             <span class="oi oi-book"></span>
                         </a>
-                        <a href="/customers/edit/@payment.Id" class="btn btn-warning">
+                        <a href="/payments/edit/@payment.Id" class="btn btn-warning">
                             <span class="oi oi-pencil"></span>
                         </a>
                         <button class="btn btn-danger" @onclick="@(()=>Delete(payment.Id))">
@@ -51,7 +58,7 @@ else
 
     protected async override Task OnInitializedAsync()
     {
-       Payments = await _client.GetFromJsonAsync<List<Payment>>($"{Endpoints.PaymentsEndpoint}");
+        Payments = await _client.GetFromJsonAsync<List<Payment>>($"{Endpoints.PaymentsEndpoint}");
     }
 
     async Task Delete(int paymentId)

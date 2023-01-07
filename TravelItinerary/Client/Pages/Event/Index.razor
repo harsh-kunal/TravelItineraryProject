@@ -6,6 +6,13 @@
 <h3 class="card-title">Event Makes</h3>
 <br />
 
+<a href="/events/create" class="btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Create New Events
+</a>
+<br />
+<br />
+
 @if (Events == null)
 {
     <div class="alert alert-info">Loading Events...</div>
@@ -18,6 +25,7 @@ else
                 <th>Event Start Date</th>
                 <th>Event End Date</th>
                 <th>Event Location</th>
+                <th>Event Title</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -25,14 +33,15 @@ else
             @foreach (var eve in Events)
             {
                 <tr>
-                    <td>@eve.StartDate</td>
-                    <td>@eve.EndDate</td>
+                    <td>@eve.StartDate.Date.ToString("dd MMMM yyyy")</td>
+                    <td>@eve.EndDate.Date.ToString("dd MMMM yyyy")</td>
                     <td>@eve.EventLocation</td>
+                    <td>@eve.EventTitle</td>
                     <td>
-                        <a href="/customers/view/@eve.Id" class="btn btn-primary">
+                        <a href="/events/view/@eve.Id" class="btn btn-primary">
                             <span class="oi oi-book"></span>
                         </a>
-                        <a href="/customers/edit/@eve.Id" class="btn btn-warning">
+                        <a href="/events/edit/@eve.Id" class="btn btn-warning">
                             <span class="oi oi-pencil"></span>
                         </a>
                         <button class="btn btn-danger" @onclick="@(()=>Delete(eve.Id))">

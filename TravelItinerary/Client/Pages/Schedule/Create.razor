@@ -1,0 +1,67 @@
+﻿@page "/schedules/create"
+@inject HttpClient _client
+@inject IJSRuntime js
+@inject NavigationManager _navManager
+
+<h3 class="card-title">Create New Schedules</h3>
+<hr />
+<br />
+
+<EditForm Model="@schedule" OnValidSubmit="CreateSchedule">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Detination: </label>
+        <div>
+            <InputSelect @bind-Value="schedule.TripId" class="form-control">
+                <option value=""> --Select Destination-- </option>
+                @if (Trips != null)
+                {
+                    foreach (var trip in Trips)
+                    {
+                        <option value="@trip.Id">@trip.Destination</option>
+                    }
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => schedule.TripId)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label> Schedule Start Date: </label>
+        <div>
+            <InputDate @bind-Value="@schedule.StartDate" class="form-control" />
+            <ValidationMessage For="@(() => schedule.StartDate)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Schedule End Date: </label>
+        <div>
+            <InputDate @bind-Value="@schedule.EndDate" class="form-control" />
+            <ValidationMessage For="@(() => schedule.EndDate)" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-block">
+        Create Schedule
+    </button>
+</EditForm>
+
+@code {
+    Schedule schedule = new Schedule();
+
+    private IList<Trip> Trips;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Trips = await _client.GetFromJsonAsync<List<Trip>>($"{Endpoints.TripsEndpoint}");
+    }
+
+    private async Task CreateSchedule()
+    {
+        await _client.PostAsJsonAsync(Endpoints.SchedulesEndpoint, schedule);
+        _navManager.NavigateTo("/schedules/");
+    }
+}

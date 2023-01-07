@@ -6,6 +6,13 @@
 <h3 class="card-title">Trip Makes</h3>
 <br />
 
+<a href="/trips/create" class="btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Create New Trip
+</a>
+<br />
+<br />
+
 @if (Trips == null)
 {
     <div class="alert alert-info">Loading Trips...</div>
@@ -15,6 +22,7 @@ else
     <table class="table table-responsive">
         <thead>
             <tr>
+                <th>Customer Name</th>
                 <th>Trip Start Date</th>
                 <th>Trip End Date</th>
                 <th>Destination</th>
@@ -26,15 +34,16 @@ else
             @foreach (var trip in Trips)
             {
                 <tr>
-                    <td>@trip.StartDate</td>
-                    <td>@trip.EndDate</td>
+                    <td>@trip.Customer.Name</td>
+                    <td>@trip.StartDate.Date.ToString("dd MMMM yyyy")</td>
+                    <td>@trip.EndDate.Date.ToString("dd MMMM yyyy")</td>
                     <td>@trip.Destination</td>
                     <td>@trip.Pax</td>
                     <td>
-                        <a href="/customers/view/@trip.Id" class="btn btn-primary">
+                        <a href="/trips/view/@trip.Id" class="btn btn-primary">
                             <span class="oi oi-book"></span>
                         </a>
-                        <a href="/customers/edit/@trip.Id" class="btn btn-warning">
+                        <a href="/trips/edit/@trip.Id" class="btn btn-warning">
                             <span class="oi oi-pencil"></span>
                         </a>
                         <button class="btn btn-danger" @onclick="@(()=>Delete(trip.Id))">
@@ -53,7 +62,7 @@ else
 
     protected async override Task OnInitializedAsync()
     {
-       Trips = await _client.GetFromJsonAsync<List<Trip>>($"{Endpoints.TripsEndpoint}");
+        Trips = await _client.GetFromJsonAsync<List<Trip>>($"{Endpoints.TripsEndpoint}");
     }
 
     async Task Delete(int tripId)
@@ -65,8 +74,6 @@ else
             await _client.DeleteAsync($"{Endpoints.TripsEndpoint}/{tripId}");
             await OnInitializedAsync();
         }
-
-
     }
 
 }

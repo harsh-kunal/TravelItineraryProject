@@ -152,14 +152,14 @@ namespace TravelItinerary.Server.Migrations
                         new
                         {
                             Id = "ad2bcf0c-20db-474f-8407-5a6b159518ba",
-                            ConcurrencyStamp = "c4e0c43f-9dab-4282-9ce4-37fb40548c4b",
+                            ConcurrencyStamp = "ec7c3bf9-f6e1-4e10-8bb9-985c1b13f6a1",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
                             Id = "bd2bcf0c-20db-474f-8407-5a6b159518bb",
-                            ConcurrencyStamp = "d972e52d-da43-4ba9-8b5c-9385c7873ed7",
+                            ConcurrencyStamp = "b665d945-2f40-481e-a2aa-1fb82f8c1a90",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -355,7 +355,7 @@ namespace TravelItinerary.Server.Migrations
                         {
                             Id = "3781efa7-66dc-47f0-860f-e506d04102e4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bdd09eb9-4e86-4371-8604-13eb2cd287ab",
+                            ConcurrencyStamp = "f60876b3-3f7c-4ea9-9468-c20fed17fc7b",
                             Email = "admin@localhost.com",
                             EmailConfirmed = false,
                             FirstName = "Admin",
@@ -363,9 +363,9 @@ namespace TravelItinerary.Server.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFEPGzaBxrka7Pdk81mlYegurCKRg9OG3hPvkT2bB19WzyMvW1XV+THBO1ZTl8OVjg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEK7CN2ox6X4JLnsG0+qUIh3WZNCa5yCcOXXVqbpX2ByybeIl2hV03Bn6cPsmjZHjeA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "20ec6971-9801-4ef8-9140-3587a5510e67",
+                            SecurityStamp = "f3468753-5f77-4803-857f-51998953ac32",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });
@@ -450,20 +450,20 @@ namespace TravelItinerary.Server.Migrations
                         new
                         {
                             Id = 1,
-                            Alias = "Kunal [Default by System]",
+                            Alias = "Kunal",
                             Email = "harsh123@gmail.com",
-                            Gender = "Male [Default by System]",
-                            Name = "Harsh [Default by System]",
+                            Gender = "Male",
+                            Name = "Harsh",
                             Password = "A12345678",
                             PhoneNumber = "82375471"
                         },
                         new
                         {
                             Id = 2,
-                            Alias = "Tang [Default by System]",
+                            Alias = "Tang",
                             Email = "yingzheng678@gmail.com",
-                            Gender = "Male [Default by System]",
-                            Name = "Ying Zheng [Default by System]",
+                            Gender = "Male",
+                            Name = "Ying Zheng",
                             Password = "S5151675678",
                             PhoneNumber = "88359828"
                         });

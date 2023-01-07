@@ -1,0 +1,75 @@
+﻿@page "/customers/create"
+@inject HttpClient _client
+@inject IJSRuntime js
+@inject NavigationManager _navManager
+
+<h3 class="card-title">Create New Customers</h3>
+<hr />
+<br />
+
+<EditForm Model="@customer" OnValidSubmit="CreateCustomer">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Name: </label>
+        <div>
+            <InputText @bind-Value="@customer.Name" class="form-control" />
+            <ValidationMessage For="@(() => customer.Name)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label> Alias: </label>
+        <div>
+            <InputText @bind-Value="@customer.Alias" class="form-control" />
+            <ValidationMessage For="@(() => customer.Alias)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Phone Number: </label>
+        <div>
+            <InputText @bind-Value="@customer.PhoneNumber" class="form-control" />
+            <ValidationMessage For="@(() => customer.PhoneNumber)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Gender: </label>
+        <div>
+            <InputText @bind-Value="@customer.Gender" class="form-control" />
+            <ValidationMessage For="@(() => customer.Gender)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Email Address: </label>
+        <div>
+            <InputText @bind-Value="@customer.Email" class="form-control" />
+            <ValidationMessage For="@(() => customer.Email)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Password: </label>
+        <div>
+            <InputText @bind-Value="@customer.Password" class="form-control" />
+            <ValidationMessage For="@(() => customer.Password)" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-block">
+        Create Customer
+    </button>
+</EditForm>
+
+@code {
+    Customer customer = new Customer();
+
+    private async Task CreateCustomer()
+    {
+        await _client.PostAsJsonAsync(Endpoints.CustomersEndpoint, customer);
+        _navManager.NavigateTo("/customers/");
+    }
+}

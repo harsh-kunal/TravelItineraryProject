@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TravelItinerary.Server.Migrations
 {
-    public partial class AddApplicationTables : Migration
+    public partial class newdb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -389,6 +389,34 @@ namespace TravelItinerary.Server.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "ad2bcf0c-20db-474f-8407-5a6b159518ba", "ec7c3bf9-f6e1-4e10-8bb9-985c1b13f6a1", "Administrator", "ADMINISTRATOR" },
+                    { "bd2bcf0c-20db-474f-8407-5a6b159518bb", "b665d945-2f40-481e-a2aa-1fb82f8c1a90", "User", "USER" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "3781efa7-66dc-47f0-860f-e506d04102e4", 0, "f60876b3-3f7c-4ea9-9468-c20fed17fc7b", "admin@localhost.com", false, "Admin", "User", false, null, "ADMIN@LOCALHOST.COM", "ADMIN", "AQAAAAEAACcQAAAAEK7CN2ox6X4JLnsG0+qUIh3WZNCa5yCcOXXVqbpX2ByybeIl2hV03Bn6cPsmjZHjeA==", null, false, "f3468753-5f77-4803-857f-51998953ac32", false, "Admin" });
+
+            migrationBuilder.InsertData(
+                table: "Customers",
+                columns: new[] { "Id", "Alias", "Email", "Gender", "Name", "Password", "PhoneNumber" },
+                values: new object[,]
+                {
+                    { 1, "Kunal", "harsh123@gmail.com", "Male", "Harsh", "A12345678", "82375471" },
+                    { 2, "Tang", "yingzheng678@gmail.com", "Male", "Ying Zheng", "S5151675678", "88359828" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "ad2bcf0c-20db-474f-8407-5a6b159518ba", "3781efa7-66dc-47f0-860f-e506d04102e4" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Accommodations_FligAccoId",

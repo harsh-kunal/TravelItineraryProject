@@ -1,0 +1,56 @@
+﻿@inject HttpClient _client
+
+<EditForm Model="@schedule" OnValidSubmit="@OnValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Detination: </label>
+        <div>
+            <InputSelect @bind-Value="schedule.TripId" class="form-control">
+                <option value=""> --Select Destination-- </option>
+                @if (Trips != null)
+                {
+                    foreach (var trip in Trips)
+                    {
+                        <option value="@trip.Id">@trip.Destination</option>
+                    }
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => schedule.TripId)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label> Schedule Start Date: </label>
+        <div>
+            <InputDate @bind-Value="@schedule.StartDate" class="form-control" />
+            <ValidationMessage For="@(() => schedule.StartDate)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Schedule End Date: </label>
+        <div>
+            <InputDate @bind-Value="@schedule.EndDate" class="form-control" />
+            <ValidationMessage For="@(() => schedule.EndDate)" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-block">
+        @ButtonText
+    </button>
+</EditForm>
+
+@code {
+    [Parameter] public Schedule schedule { get; set; }
+    [Parameter] public string ButtonText { get; set; } = "Save";
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+
+    private IList<Trip> Trips;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Trips = await _client.GetFromJsonAsync<List<Trip>>($"{Endpoints.TripsEndpoint}");
+    }
+}

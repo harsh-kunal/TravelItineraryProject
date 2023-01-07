@@ -1,0 +1,83 @@
+﻿@page "/trips/create"
+@inject HttpClient _client
+@inject IJSRuntime js
+@inject NavigationManager _navManager
+
+<h3 class="card-title">Create New Trips</h3>
+<hr />
+<br />
+
+<EditForm Model="@trip" OnValidSubmit="CreateTrip">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Name: </label>
+        <div>
+            <InputSelect @bind-Value="trip.CustomerId" class="form-control">
+                <option value=""> --Select Customer-- </option>
+                @if (Customers != null)
+                {
+                    foreach (var customer in Customers)
+                    {
+                        <option value="@customer.Id">@customer.Name</option>
+                    }
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => trip.CustomerId)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label> Trip Start Date: </label>
+        <div>
+            <InputDate @bind-Value="@trip.StartDate" class="form-control" />
+            <ValidationMessage For="@(() => trip.StartDate)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Trip End Date: </label>
+        <div>
+            <InputDate @bind-Value="@trip.EndDate" class="form-control" />
+            <ValidationMessage For="@(() => trip.EndDate)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Destination: </label>
+        <div>
+            <InputText @bind-Value="@trip.Destination" class="form-control" />
+            <ValidationMessage For="@(() => trip.Destination)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Number of Pax: </label>
+        <div>
+            <InputNumber @bind-Value="@trip.Pax" class="form-control" />
+            <ValidationMessage For="@(() => trip.Pax)" />
+        </div>
+    </div>
+
+    <button type ="submit" class ="btn btn-success btn-block">
+        Create Trip
+    </button>
+</EditForm>
+
+@code {
+    Trip trip = new Trip();
+
+    private IList<Customer> Customers;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Customers = await _client.GetFromJsonAsync<List<Customer>>($"{Endpoints.CustomersEndpoint}");
+    }
+
+    private async Task CreateTrip()
+    {
+        await _client.PostAsJsonAsync(Endpoints.TripsEndpoint, trip);
+        _navManager.NavigateTo("/trips/");
+    }
+}

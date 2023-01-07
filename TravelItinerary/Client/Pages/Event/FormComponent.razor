@@ -1,0 +1,80 @@
+﻿@inject HttpClient _client
+
+<EditForm Model="@eve" OnValidSubmit="@OnValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Detination: </label>
+        <div>
+            <InputSelect @bind-Value="eve.ScheduleId" class="form-control">
+                <option value=""> --Select Destination-- </option>
+                @if (Schedules != null)
+                {
+                    foreach (var schedule in Schedules)
+                    {
+                        <option value="@schedule.Id">@schedule.Trip.Destination</option>
+                    }
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => eve.ScheduleId)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label> Event Start Date: </label>
+        <div>
+            <InputDate @bind-Value="@eve.StartDate" class="form-control" />
+            <ValidationMessage For="@(() => eve.StartDate)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Event End Date: </label>
+        <div>
+            <InputDate @bind-Value="@eve.EndDate" class="form-control" />
+            <ValidationMessage For="@(() => eve.EndDate)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Event Title: </label>
+        <div>
+            <InputText @bind-Value="@eve.EventTitle" class="form-control" />
+            <ValidationMessage For="@(() => eve.EventTitle)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Event Description: </label>
+        <div>
+            <InputText @bind-Value="@eve.EventDescription" class="form-control" />
+            <ValidationMessage For="@(() => eve.EventDescription)" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Event Location: </label>
+        <div>
+            <InputText @bind-Value="@eve.EventLocation" class="form-control" />
+            <ValidationMessage For="@(() => eve.EventLocation)" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-block">
+        @ButtonText
+    </button>
+</EditForm>
+
+@code {
+    [Parameter] public Event eve { get; set; }
+    [Parameter] public string ButtonText { get; set; } = "Save";
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+
+    private IList<Schedule> Schedules;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Schedules = await _client.GetFromJsonAsync<List<Schedule>>($"{Endpoints.SchedulesEndpoint}");
+    }
+}

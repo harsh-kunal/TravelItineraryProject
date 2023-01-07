@@ -3,7 +3,14 @@
 @inject IJSRuntime js
 @attribute [Authorize]
 
-<h3 class="card-title">Flight + Hotel Makes</h3>
+<h3 class="card-title">Flight & Hotel Makes</h3>
+<br />
+
+<a href="/fligaccos/create" class="btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Create New Flight & Hotel
+</a>
+<br />
 <br />
 
 @if (FligAccos == null)
@@ -26,10 +33,10 @@ else
                 <tr>
                     <td>@fligacco.Id</td>
                     <td>
-                        <a href="/customers/view/@fligacco.Id" class="btn btn-primary">
+                        <a href="/fligaccos/view/@fligacco.Id" class="btn btn-primary">
                             <span class="oi oi-book"></span>
                         </a>
-                        <a href="/customers/edit/@fligacco.Id" class="btn btn-warning">
+                        <a href="/fligaccos/edit/@fligacco.Id" class="btn btn-warning">
                             <span class="oi oi-pencil"></span>
                         </a>
                         <button class="btn btn-danger" @onclick="@(()=>Delete(fligacco.Id))">

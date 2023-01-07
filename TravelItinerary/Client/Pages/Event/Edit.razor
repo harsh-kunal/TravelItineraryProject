@@ -1,0 +1,24 @@
+﻿@page "/events/edit/{id:int}"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3>Edit Event</h3>
+<FormComponent ButtonText="Update" OnValidSubmit="EditEvent" eve="eve" />
+
+@code {
+    [Parameter] public int id { get; set; }
+    Event eve = new Event();
+
+    protected async override Task OnParametersSetAsync()
+    {
+        eve = await
+       _client.GetFromJsonAsync<Event>($"{Endpoints.EventsEndpoint}/{id}");
+    }
+
+    async Task EditEvent()
+    {
+        await _client.PutAsJsonAsync($"{Endpoints.EventsEndpoint}/{id}", eve);
+        _navManager.NavigateTo("/events/");
+    }
+}
+
