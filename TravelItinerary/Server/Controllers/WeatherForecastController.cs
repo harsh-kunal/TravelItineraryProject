@@ -9,7 +9,7 @@ using TravelItinerary.Shared;
 
 namespace TravelItinerary.Server.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase

@@ -9,7 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
 using TravelItinerary.Server.Data;
+using TravelItinerary.Server.IRepository;
 using TravelItinerary.Server.Models;
+using TravelItinerary.Server.Repository;
 
 namespace TravelItinerary.Server
 {
@@ -40,6 +42,8 @@ namespace TravelItinerary.Server
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
+
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();
