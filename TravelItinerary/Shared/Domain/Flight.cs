@@ -13,13 +13,13 @@ namespace TravelItinerary.Shared.Domain
         public string DestinationTo { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public int FlighFees { get; set; }
+        public double FlighFees { get; set; }
         public int Baggage { get; set; }
         public string CabinClass { get; set; }
-        public int FlightRating { get; set; }
-        public int FligAccoId { get; set; }
-        public virtual FligAcco FligAcco { get; set; }
+        public double FlightRating { get; set; }
         public int? TripId { get; set; }
         public virtual Trip Trip { get; set; }
+        public double PaymentId { get; set; }
+        public virtual Payment Payment { get; set; }
     }
 }

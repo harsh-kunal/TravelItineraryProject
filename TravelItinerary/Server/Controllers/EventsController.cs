@@ -31,7 +31,7 @@ namespace TravelItinerary.Server.Controllers
         public async Task<IActionResult> GetEvents()
         {
             //return await _context.Customers.ToListAsync();
-            var eves = await _unitOfWork.Events.GetAll(includes: q => q.Include(x =>x.Schedule));
+            var eves = await _unitOfWork.Events.GetAll(includes: q => q.Include(x => x.Schedule).ThenInclude(h => h.Trip).ThenInclude(g => g.Customer));
             return Ok(eves);
         }
 

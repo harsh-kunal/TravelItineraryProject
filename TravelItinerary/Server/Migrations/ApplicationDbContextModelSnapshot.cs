@@ -152,14 +152,14 @@ namespace TravelItinerary.Server.Migrations
                         new
                         {
                             Id = "ad2bcf0c-20db-474f-8407-5a6b159518ba",
-                            ConcurrencyStamp = "ec7c3bf9-f6e1-4e10-8bb9-985c1b13f6a1",
+                            ConcurrencyStamp = "34e03047-a05d-428a-9d9b-492d223cd993",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
                             Id = "bd2bcf0c-20db-474f-8407-5a6b159518bb",
-                            ConcurrencyStamp = "b665d945-2f40-481e-a2aa-1fb82f8c1a90",
+                            ConcurrencyStamp = "83a6e101-3b63-4c1f-9ecd-4b448e64bc82",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -355,7 +355,7 @@ namespace TravelItinerary.Server.Migrations
                         {
                             Id = "3781efa7-66dc-47f0-860f-e506d04102e4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f60876b3-3f7c-4ea9-9468-c20fed17fc7b",
+                            ConcurrencyStamp = "22ca35e2-75c8-46e9-b363-ddccbdee8c0d",
                             Email = "admin@localhost.com",
                             EmailConfirmed = false,
                             FirstName = "Admin",
@@ -363,9 +363,9 @@ namespace TravelItinerary.Server.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEK7CN2ox6X4JLnsG0+qUIh3WZNCa5yCcOXXVqbpX2ByybeIl2hV03Bn6cPsmjZHjeA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEG3wTUrv91VZfn4zQj2saBs7d/uVkRU5K0CnVC774HvH8sGlMpZsa19uvsYnSy1IoA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f3468753-5f77-4803-857f-51998953ac32",
+                            SecurityStamp = "1c99a8c0-a930-49c2-852d-1921cc98d443",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });
@@ -378,8 +378,8 @@ namespace TravelItinerary.Server.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AccommodationFees")
-                        .HasColumnType("int");
+                    b.Property<double>("AccommodationFees")
+                        .HasColumnType("float");
 
                     b.Property<string>("AccommodationLocation")
                         .HasColumnType("nvarchar(max)");
@@ -387,8 +387,8 @@ namespace TravelItinerary.Server.Migrations
                     b.Property<string>("AccommodationName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("AccommodationRating")
-                        .HasColumnType("int");
+                    b.Property<double>("AccommodationRating")
+                        .HasColumnType("float");
 
                     b.Property<string>("AccommodationType")
                         .HasColumnType("nvarchar(max)");
@@ -396,10 +396,13 @@ namespace TravelItinerary.Server.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FligAccoId")
+                    b.Property<int>("MyProperty")
                         .HasColumnType("int");
 
-                    b.Property<int>("MyProperty")
+                    b.Property<double>("PaymentId")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("PaymentId1")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartDate")
@@ -410,7 +413,7 @@ namespace TravelItinerary.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FligAccoId");
+                    b.HasIndex("PaymentId1");
 
                     b.HasIndex("TripId");
 
@@ -425,21 +428,31 @@ namespace TravelItinerary.Server.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Alias")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Gender")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -508,12 +521,41 @@ namespace TravelItinerary.Server.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("PaymentId")
+                    b.Property<string>("AccommodationName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Airlines")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DestinationFrom")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DestinationTo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("FlighAccoFees")
+                        .HasColumnType("float");
+
+                    b.Property<double>("PaymentId")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("PaymentId1")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("TripId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PaymentId");
+                    b.HasIndex("PaymentId1");
+
+                    b.HasIndex("TripId");
 
                     b.ToTable("FligAccos");
                 });
@@ -543,13 +585,16 @@ namespace TravelItinerary.Server.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FligAccoId")
-                        .HasColumnType("int");
+                    b.Property<double>("FlighFees")
+                        .HasColumnType("float");
 
-                    b.Property<int>("FlighFees")
-                        .HasColumnType("int");
+                    b.Property<double>("FlightRating")
+                        .HasColumnType("float");
 
-                    b.Property<int>("FlightRating")
+                    b.Property<double>("PaymentId")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("PaymentId1")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartDate")
@@ -560,7 +605,7 @@ namespace TravelItinerary.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FligAccoId");
+                    b.HasIndex("PaymentId1");
 
                     b.HasIndex("TripId");
 
@@ -577,8 +622,8 @@ namespace TravelItinerary.Server.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PaymentAmount")
-                        .HasColumnType("int");
+                    b.Property<double>("PaymentAmount")
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("datetime2");
@@ -701,17 +746,15 @@ namespace TravelItinerary.Server.Migrations
 
             modelBuilder.Entity("TravelItinerary.Shared.Domain.Accommodation", b =>
                 {
-                    b.HasOne("TravelItinerary.Shared.Domain.FligAcco", "FligAcco")
+                    b.HasOne("TravelItinerary.Shared.Domain.Payment", "Payment")
                         .WithMany()
-                        .HasForeignKey("FligAccoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PaymentId1");
 
                     b.HasOne("TravelItinerary.Shared.Domain.Trip", "Trip")
                         .WithMany()
                         .HasForeignKey("TripId");
 
-                    b.Navigation("FligAcco");
+                    b.Navigation("Payment");
 
                     b.Navigation("Trip");
                 });
@@ -731,26 +774,28 @@ namespace TravelItinerary.Server.Migrations
                 {
                     b.HasOne("TravelItinerary.Shared.Domain.Payment", "Payment")
                         .WithMany()
-                        .HasForeignKey("PaymentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Payment");
-                });
-
-            modelBuilder.Entity("TravelItinerary.Shared.Domain.Flight", b =>
-                {
-                    b.HasOne("TravelItinerary.Shared.Domain.FligAcco", "FligAcco")
-                        .WithMany()
-                        .HasForeignKey("FligAccoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PaymentId1");
 
                     b.HasOne("TravelItinerary.Shared.Domain.Trip", "Trip")
                         .WithMany()
                         .HasForeignKey("TripId");
 
-                    b.Navigation("FligAcco");
+                    b.Navigation("Payment");
+
+                    b.Navigation("Trip");
+                });
+
+            modelBuilder.Entity("TravelItinerary.Shared.Domain.Flight", b =>
+                {
+                    b.HasOne("TravelItinerary.Shared.Domain.Payment", "Payment")
+                        .WithMany()
+                        .HasForeignKey("PaymentId1");
+
+                    b.HasOne("TravelItinerary.Shared.Domain.Trip", "Trip")
+                        .WithMany()
+                        .HasForeignKey("TripId");
+
+                    b.Navigation("Payment");
 
                     b.Navigation("Trip");
                 });

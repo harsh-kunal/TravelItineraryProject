@@ -2,13 +2,15 @@
 @inject HttpClient _client
 @inject IJSRuntime js
 @attribute [Authorize]
+@inject HttpInterceptorService _interceptor
+@implements IDisposable
 
-<h3 class="card-title">Hotel Makes</h3>
+<h3 class="card-title">Hotels</h3>
 <br />
 
 <a href="/accommodations/create" class="btn btn-secondary">
     <span class="oi oi-plus"></span>
-    Create New Accommodations
+    Create New Hotel
 </a>
 <br />
 <br />
@@ -19,36 +21,42 @@
 }
 else
 {
-    <table class="table table-responsive">
+    <table class="table table-responsive" id="accommodationsTable">
         <thead>
             <tr>
+                <th>Customer Name</th>
+                <th>Hotel Name</th>
                 <th>Check-in Date</th>
                 <th>Check-out Date</th>
+                <th>Accommodation </th>
+                <th>Destination</th>
                 <th>Price</th>
-                <th>Location</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var accommodation in Accommodations)
             {
-                <tr>
-                    <td>@accommodation.StartDate</td>
-                    <td>@accommodation.EndDate</td>
-                    <td>@accommodation.AccommodationFees</td>
-                    <td>@accommodation.AccommodationLocation</td>
-                    <td>
-                        <a href="/accommodations/view/@accommodation.Id" class="btn btn-primary">
-                            <span class="oi oi-book"></span>
-                        </a>
-                        <a href="/accommodations/edit/@accommodation.Id" class="btn btn-warning">
-                            <span class="oi oi-pencil"></span>
-                        </a>
-                        <button class="btn btn-danger" @onclick="@(()=>Delete(accommodation.Id))">
-                            <span class="oi oi-delete"></span>
-                        </button>
-                    </td>
-                </tr>
+            <tr>
+                <td>@accommodation.Trip.Customer.Name</td>
+                <td>@accommodation.AccommodationName</td>
+                <td>@accommodation.StartDate.Date.ToString("dd MMMM yyyy")</td>
+                <td>@accommodation.EndDate.Date.ToString("dd MMMM yyyy")</td>
+                <td>@accommodation.AccommodationType</td>
+                <td>@accommodation.Trip.Destination</td>
+                <td>@accommodation.AccommodationFees</td>
+                <td>
+                    <a href="/accommodations/view/@accommodation.Id" class="btn btn-primary">
+                        <span class="oi oi-book"></span>
+                    </a>
+                    <a href="/accommodations/edit/@accommodation.Id" class="btn btn-warning">
+                        <span class="oi oi-pencil"></span>
+                    </a>
+                    <button class="btn btn-danger" @onclick="@(()=>Delete(accommodation.Id))">
+                        <span class="oi oi-delete"></span>
+                    </button>
+                </td>
+            </tr>
             }
         </tbody>
     </table>
@@ -60,6 +68,7 @@ else
 
     protected async override Task OnInitializedAsync()
     {
+        _interceptor.MonitorEvent();
         Accommodations = await _client.GetFromJsonAsync<List<Accommodation>>($"{Endpoints.AccommodationsEndpoint}");
     }
 
@@ -72,9 +81,17 @@ else
             await _client.DeleteAsync($"{Endpoints.AccommodationsEndpoint}/{accommodationId}");
             await OnInitializedAsync();
         }
-
-
     }
 
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("AddDataTable", "#accommodationsTable");
+    }
+
+    public void Dispose()
+    {
+        _interceptor.DisposeEvent();
+        js.InvokeVoidAsync("DataTablesDispose", "#accommodationsTable");
+    }
 }
 

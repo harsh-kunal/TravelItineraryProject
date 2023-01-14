@@ -1,0 +1,17 @@
+﻿@page "/accommodations/view/{id:int}"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3>View Hotel</h3>
+
+<FormComponent accommodation="accommodation" Disabled="true" />
+
+@code {
+    [Parameter] public int id { get; set; }
+    Accommodation accommodation = new Accommodation();
+    protected async override Task OnParametersSetAsync()
+    {
+        accommodation = await
+        _client.GetFromJsonAsync<Accommodation>($"{Endpoints.AccommodationsEndpoint}/{id}");
+    }
+}

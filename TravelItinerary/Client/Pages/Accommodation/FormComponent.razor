@@ -1,0 +1,104 @@
+﻿@inject HttpClient _client
+
+<EditForm Model="@accommodation" OnValidSubmit="@OnValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <fieldset disabled="@Disabled">
+        <div class="form-group">
+            <label> Hotel Name: </label>
+            <div>
+                <InputText @bind-Value="@accommodation.AccommodationName" class="form-control" />
+                <ValidationMessage For="@(() => accommodation.AccommodationName)" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Detination: </label>
+            <div>
+                <InputSelect @bind-Value="accommodation.TripId" class="form-control">
+                    <option value=""> --Select Destination-- </option>
+                    @if (Trips != null)
+                    {
+                        foreach (var trip in Trips)
+                        {
+                            <option value="@trip.Id">@trip.Destination</option>
+                        }
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => accommodation.TripId)" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label> Check-in Date: </label>
+            <div>
+                <InputDate @bind-Value="@accommodation.StartDate" class="form-control" />
+                <ValidationMessage For="@(() => accommodation.StartDate)" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label> Check-out Date: </label>
+            <div>
+                <InputDate @bind-Value="@accommodation.EndDate" class="form-control" />
+                <ValidationMessage For="@(() => accommodation.EndDate)" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label> Accommodation Type: </label>
+            <div>
+                <InputText @bind-Value="@accommodation.AccommodationType" class="form-control" />
+                <ValidationMessage For="@(() => accommodation.AccommodationType)" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label> Hotel Price: </label>
+            <div>
+                <InputNumber @bind-Value="@accommodation.AccommodationFees" class="form-control" />
+                <ValidationMessage For="@(() => accommodation.AccommodationFees)" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label> Hotel Location: </label>
+            <div>
+                <InputText @bind-Value="@accommodation.AccommodationLocation" class="form-control" />
+                <ValidationMessage For="@(() => accommodation.AccommodationLocation)" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label> Hotel Rating (Under 5): </label>
+            <div>
+                <InputNumber @bind-Value="@accommodation.AccommodationRating" class="form-control" />
+                <ValidationMessage For="@(() => accommodation.AccommodationRating)" />
+            </div>
+        </div>
+    </fieldset>
+
+    @if (!Disabled)
+    {
+        <button type="submit" class="btn btn-success btn-block">
+        @ButtonText
+        </button>
+    }
+    <BackToList Target="accommodations" />
+</EditForm>
+
+@code {
+    [Parameter] public bool Disabled { get; set; } = false;
+    [Parameter] public Accommodation accommodation { get; set; }
+    [Parameter] public string ButtonText { get; set; } = "Save";
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+
+    private IList<Trip> Trips;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Trips = await _client.GetFromJsonAsync<List<Trip>>($"{Endpoints.TripsEndpoint}");
+    }
+
+}

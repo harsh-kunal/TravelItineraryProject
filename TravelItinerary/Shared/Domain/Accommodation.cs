@@ -12,14 +12,14 @@ namespace TravelItinerary.Shared.Domain
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string AccommodationType { get; set; }
-        public int AccommodationFees { get; set; }
+        public double AccommodationFees { get; set; }
         public string AccommodationLocation { get; set; }
-        public int AccommodationRating { get; set; }
-        public int FligAccoId { get; set; }
-        public virtual FligAcco FligAcco { get; set; }
+        public double AccommodationRating { get; set; }
         public int? TripId { get; set; }
         public virtual Trip Trip { get; set; }
         public int MyProperty { get; set; }
+        public double PaymentId { get; set; }
+        public virtual Payment Payment { get; set; }
 
     }
 }

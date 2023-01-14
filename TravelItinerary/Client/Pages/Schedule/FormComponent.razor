@@ -4,45 +4,52 @@
     <DataAnnotationsValidator />
     <ValidationSummary />
 
-    <div class="form-group">
-        <label>Detination: </label>
-        <div>
-            <InputSelect @bind-Value="schedule.TripId" class="form-control">
-                <option value=""> --Select Destination-- </option>
-                @if (Trips != null)
-                {
-                    foreach (var trip in Trips)
+    <fieldset disabled="@Disabled">
+        <div class="form-group">
+            <label>Destination: </label>
+            <div>
+                <InputSelect @bind-Value="schedule.TripId" class="form-control">
+                    <option value=""> --Select Destination-- </option>
+                    @if (Trips != null)
                     {
-                        <option value="@trip.Id">@trip.Destination</option>
+                        foreach (var trip in Trips)
+                        {
+                            <option value="@trip.Id">@trip.Destination</option>
+                        }
                     }
-                }
-            </InputSelect>
-            <ValidationMessage For="@(() => schedule.TripId)" />
+                </InputSelect>
+                <ValidationMessage For="@(() => schedule.TripId)" />
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <label> Schedule Start Date: </label>
-        <div>
-            <InputDate @bind-Value="@schedule.StartDate" class="form-control" />
-            <ValidationMessage For="@(() => schedule.StartDate)" />
+        <div class="form-group">
+            <label> Schedule Start Date: </label>
+            <div>
+                <InputDate @bind-Value="@schedule.StartDate" class="form-control" />
+                <ValidationMessage For="@(() => schedule.StartDate)" />
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <label>Schedule End Date: </label>
-        <div>
-            <InputDate @bind-Value="@schedule.EndDate" class="form-control" />
-            <ValidationMessage For="@(() => schedule.EndDate)" />
+        <div class="form-group">
+            <label>Schedule End Date: </label>
+            <div>
+                <InputDate @bind-Value="@schedule.EndDate" class="form-control" />
+                <ValidationMessage For="@(() => schedule.EndDate)" />
+            </div>
         </div>
-    </div>
+    </fieldset>
 
-    <button type="submit" class="btn btn-success btn-block">
-        @ButtonText
-    </button>
+    @if (!Disabled)
+    {
+        <button type="submit" class="btn btn-success btn-block">
+            @ButtonText
+        </button>
+    }
+    <BackToList Target="schedules" />
 </EditForm>
 
 @code {
+    [Parameter] public bool Disabled { get; set; } = false;
     [Parameter] public Schedule schedule { get; set; }
     [Parameter] public string ButtonText { get; set; } = "Save";
     [Parameter] public EventCallback OnValidSubmit { get; set; }

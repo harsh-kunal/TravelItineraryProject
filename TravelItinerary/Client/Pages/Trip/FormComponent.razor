@@ -4,61 +4,68 @@
     <DataAnnotationsValidator />
     <ValidationSummary />
 
-    <div class="form-group">
-        <label>Name: </label>
-        <div>
-            <InputSelect @bind-Value="trip.CustomerId" class="form-control">
-                <option value=""> --Select Customer-- </option>
-                @if (Customers != null)
-                {
-                    foreach (var customer in Customers)
+    <fieldset disabled="@Disabled">
+        <div class="form-group">
+            <label>Name: </label>
+            <div>
+                <InputSelect @bind-Value="trip.CustomerId" class="form-control">
+                    <option value=""> --Select Customer-- </option>
+                    @if (Customers != null)
                     {
-                        <option value="@customer.Id">@customer.Name</option>
+                        foreach (var customer in Customers)
+                        {
+                            <option value="@customer.Id">@customer.Name</option>
+                        }
                     }
-                }
-            </InputSelect>
-            <ValidationMessage For="@(() => trip.CustomerId)" />
+                </InputSelect>
+                <ValidationMessage For="@(() => trip.CustomerId)" />
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <label> Trip Start Date: </label>
-        <div>
-            <InputDate @bind-Value="@trip.StartDate" class="form-control" />
-            <ValidationMessage For="@(() => trip.StartDate)" />
+        <div class="form-group">
+            <label> Trip Start Date: </label>
+            <div>
+                <InputDate @bind-Value="@trip.StartDate" class="form-control" />
+                <ValidationMessage For="@(() => trip.StartDate)" />
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <label>Trip End Date: </label>
-        <div>
-            <InputDate @bind-Value="@trip.EndDate" class="form-control" />
-            <ValidationMessage For="@(() => trip.EndDate)" />
+        <div class="form-group">
+            <label>Trip End Date: </label>
+            <div>
+                <InputDate @bind-Value="@trip.EndDate" class="form-control" />
+                <ValidationMessage For="@(() => trip.EndDate)" />
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <label>Destination: </label>
-        <div>
-            <InputText @bind-Value="@trip.Destination" class="form-control" />
-            <ValidationMessage For="@(() => trip.Destination)" />
+        <div class="form-group">
+            <label>Destination: </label>
+            <div>
+                <InputText @bind-Value="@trip.Destination" class="form-control" />
+                <ValidationMessage For="@(() => trip.Destination)" />
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <label>Number of Pax: </label>
-        <div>
-            <InputNumber @bind-Value="@trip.Pax" class="form-control" />
-            <ValidationMessage For="@(() => trip.Pax)" />
+        <div class="form-group">
+            <label>Number of Pax: </label>
+            <div>
+                <InputNumber @bind-Value="@trip.Pax" class="form-control" />
+                <ValidationMessage For="@(() => trip.Pax)" />
+            </div>
         </div>
-    </div>
+    </fieldset>
 
-    <button type="submit" class="btn btn-success btn-block">
-        @ButtonText
-    </button>
+    @if (!Disabled)
+    {
+        <button type="submit" class="btn btn-success btn-block">
+            @ButtonText
+        </button>
+    }
+    <BackToList Target="trips" />
 </EditForm>
 
 @code {
+    [Parameter] public bool Disabled { get; set; } = false;
     [Parameter] public Trip trip { get; set; }
     [Parameter] public string ButtonText { get; set; } = "Save";
     [Parameter] public EventCallback OnValidSubmit { get; set; }

@@ -1,0 +1,17 @@
+﻿@page "/fligaccos/view/{id:int}"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3>View Flight + Hotel</h3>
+
+<FormComponent fligacco="fligacco" Disabled="true" />
+
+@code {
+    [Parameter] public int id { get; set; }
+    FligAcco fligacco = new FligAcco();
+    protected async override Task OnParametersSetAsync()
+    {
+        fligacco = await
+      _client.GetFromJsonAsync<FligAcco>($"{Endpoints.FligAccosEndpoint}/{id}");
+    }
+}

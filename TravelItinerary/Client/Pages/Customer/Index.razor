@@ -2,13 +2,15 @@
 @inject HttpClient _client
 @inject IJSRuntime js
 @attribute [Authorize]
+@inject HttpInterceptorService _interceptor
+@implements IDisposable
 
-<h3 class="card-title">Customer Makes</h3>
+<h3 class="card-title">Customers</h3>
 <br />
 
 <a href="/customers/create" class="btn btn-secondary">
     <span class="oi oi-plus"></span>
-    Create New Customers
+    Create New Customer
 </a>
 <br />
 <br />
@@ -19,14 +21,15 @@
 }
 else
 {
-    <table class="table table-responsive">
+    <table class="table table-responsive" id="customersTable">
         <thead>
             <tr>
                 <th>Customer Id</th>
-                <th>Name</th>
-                <th>Alias</th>
+                <th>First Name</th>
+                <th>Second Name</th>
                 <th>Phone Number</th>
                 <th>Gender</th>
+                <th>Email Address</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -34,11 +37,12 @@ else
             @foreach (var customer in Customers)
             {
                 <tr>
-                    <th>@customer.Id</th>
+                    <td>@customer.Id</td>
                     <td>@customer.Name</td>
                     <td>@customer.Alias</td>
                     <td>@customer.PhoneNumber</td>
                     <td>@customer.Gender</td>
+                    <td>@customer.Email</td>
                     <td>
                         <a href="/customers/view/@customer.Id" class="btn btn-primary">
                             <span class="oi oi-book"></span>
@@ -62,6 +66,7 @@ else
 
     protected async override Task OnInitializedAsync()
     {
+        _interceptor.MonitorEvent();
         Customers = await _client.GetFromJsonAsync<List<Customer>>($"{Endpoints.CustomersEndpoint}");
     }
 
@@ -76,4 +81,14 @@ else
         }
     }
 
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("AddDataTable", "#customersTable");
+    }
+
+    public void Dispose()
+    {
+        _interceptor.DisposeEvent();
+        js.InvokeVoidAsync("DataTablesDispose", "#customersTable");
+    }
 }

@@ -1,0 +1,17 @@
+﻿@page "/schedules/view/{id:int}"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3>View Schedule</h3>
+
+<FormComponent schedule="schedule" Disabled="true" />
+
+@code {
+    [Parameter] public int id { get; set; }
+    Schedule schedule = new Schedule();
+    protected async override Task OnParametersSetAsync()
+    {
+        schedule = await
+      _client.GetFromJsonAsync<Schedule>($"{Endpoints.SchedulesEndpoint}/{id}");
+    }
+}

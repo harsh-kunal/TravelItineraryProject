@@ -2,8 +2,11 @@
 @inject HttpClient _client
 @inject IJSRuntime js
 @attribute [Authorize]
+@inject HttpInterceptorService _interceptor
+@implements IDisposable
 
-<h3 class="card-title">Flight & Hotel Makes</h3>
+
+<h3 class="card-title">Flights + Hotel</h3>
 <br />
 
 <a href="/fligaccos/create" class="btn btn-secondary">
@@ -15,15 +18,21 @@
 
 @if (FligAccos == null)
 {
-    <div class="alert alert-info">Loading Flight + Hotel...</div>
+    <div class="alert alert-info">Loading Flight & Hotels...</div>
 }
 else
 {
-    <table class="table table-responsive">
+    <table class="table table-responsive" id="fligaccosTable">
         <thead>
             <tr>
-                <th>Flight + Hotel Id</th>
-                @*<th>Flight + Hotel</th>*@
+                <th>Customer Name</th>
+                <th>Airlines</th>
+                <th>Origin</th>
+                <th>Destination</th>
+                <th>Hotel Name</th>
+                <th>Check-in Date</th>
+                <th>Check-out Date</th>
+                <th>Total Price</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -31,7 +40,14 @@ else
             @foreach (var fligacco in FligAccos)
             {
                 <tr>
-                    <td>@fligacco.Id</td>
+                    <td>@fligacco.Trip.Customer.Name</td>
+                    <td>@fligacco.Airlines</td>
+                    <td>@fligacco.DestinationFrom</td>
+                    <td>@fligacco.Trip.Destination</td>
+                    <td>@fligacco.AccommodationName</td>
+                    <td>@fligacco.StartDate.ToString("dd MMMM yyyy")</td>
+                    <td>@fligacco.EndDate.ToString("dd MMMM yyyy")</td>
+                    <td>@fligacco.FlighAccoFees</td>
                     <td>
                         <a href="/fligaccos/view/@fligacco.Id" class="btn btn-primary">
                             <span class="oi oi-book"></span>
@@ -55,6 +71,7 @@ else
 
     protected async override Task OnInitializedAsync()
     {
+        _interceptor.MonitorEvent();
         FligAccos = await _client.GetFromJsonAsync<List<FligAcco>>($"{Endpoints.FligAccosEndpoint}");
     }
 
@@ -67,8 +84,16 @@ else
             await _client.DeleteAsync($"{Endpoints.FligAccosEndpoint}/{fligaccoId}");
             await OnInitializedAsync();
         }
-
-
     }
 
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("AddDataTable", "#fligaccosTable");
+    }
+
+    public void Dispose()
+    {
+        _interceptor.DisposeEvent();
+        js.InvokeVoidAsync("DataTablesDispose", "#fligaccosTable");
+    }
 }

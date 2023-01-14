@@ -1,0 +1,27 @@
+﻿@page "/fligaccos/create"
+@inject HttpClient _client
+@inject IJSRuntime js
+@inject NavigationManager _navManager
+
+<h3 class="card-title">Create New Flight + Hotel</h3>
+<hr />
+<br />
+
+<FormComponent ButtonText="Create Flight + Hotel" fligacco="fligacco" OnValidSubmit="@CreateFligAcco" />
+
+@code {
+    FligAcco fligacco = new FligAcco();
+
+    private IList<Trip> Trips;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Trips = await _client.GetFromJsonAsync<List<Trip>>($"{Endpoints.TripsEndpoint}");
+    }
+
+    private async Task CreateFligAcco()
+    {
+        await _client.PostAsJsonAsync(Endpoints.FligAccosEndpoint, fligacco);
+        _navManager.NavigateTo("/fligaccos/");
+    }
+}

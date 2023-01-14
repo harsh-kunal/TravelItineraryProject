@@ -2,13 +2,15 @@
 @inject HttpClient _client
 @inject IJSRuntime js
 @attribute [Authorize]
+@inject HttpInterceptorService _interceptor
+@implements IDisposable
 
-<h3 class="card-title">Event Makes</h3>
+<h3 class="card-title">Events</h3>
 <br />
 
 <a href="/events/create" class="btn btn-secondary">
     <span class="oi oi-plus"></span>
-    Create New Events
+    Create New Event
 </a>
 <br />
 <br />
@@ -19,9 +21,11 @@
 }
 else
 {
-    <table class="table table-responsive">
+    <table class="table table-responsive" id="eventsTable">
         <thead>
             <tr>
+                <th>Customer Name</th>
+                <th>Destination</th>
                 <th>Event Start Date</th>
                 <th>Event End Date</th>
                 <th>Event Location</th>
@@ -33,6 +37,8 @@ else
             @foreach (var eve in Events)
             {
                 <tr>
+                    <td>@eve.Schedule.Trip.Customer.Name</td>
+                    <td>@eve.Schedule.Trip.Destination</td>
                     <td>@eve.StartDate.Date.ToString("dd MMMM yyyy")</td>
                     <td>@eve.EndDate.Date.ToString("dd MMMM yyyy")</td>
                     <td>@eve.EventLocation</td>
@@ -60,6 +66,7 @@ else
 
     protected async override Task OnInitializedAsync()
     {
+        _interceptor.MonitorEvent();
         Events = await _client.GetFromJsonAsync<List<Event>>($"{Endpoints.EventsEndpoint}");
     }
 
@@ -72,9 +79,17 @@ else
             await _client.DeleteAsync($"{Endpoints.EventsEndpoint}/{eventId}");
             await OnInitializedAsync();
         }
-
-
     }
 
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("AddDataTable", "#eventsTable");
+    }
+
+    public void Dispose()
+    {
+        _interceptor.DisposeEvent();
+        js.InvokeVoidAsync("DataTablesDispose", "#eventsTable");
+    }
 }
 

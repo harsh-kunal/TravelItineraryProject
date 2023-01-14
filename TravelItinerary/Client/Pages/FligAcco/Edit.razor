@@ -1,0 +1,23 @@
+﻿@page "/fligaccos/edit/{id:int}"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3>Edit Flight + Hotel</h3>
+<FormComponent ButtonText="Update" OnValidSubmit="EditFligAcco" fligacco="fligacco" />
+
+@code {
+    [Parameter] public int id { get; set; }
+    FligAcco fligacco = new FligAcco();
+
+    protected async override Task OnParametersSetAsync()
+    {
+        fligacco = await
+       _client.GetFromJsonAsync<FligAcco>($"{Endpoints.FligAccosEndpoint}/{id}");
+    }
+
+    async Task EditFligAcco()
+    {
+        await _client.PutAsJsonAsync($"{Endpoints.FligAccosEndpoint}/{id}", fligacco);
+        _navManager.NavigateTo("/fligaccos/");
+    }
+}

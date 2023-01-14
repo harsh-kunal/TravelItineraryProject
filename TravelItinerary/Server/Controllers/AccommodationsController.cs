@@ -31,7 +31,7 @@ namespace TravelItinerary.Server.Controllers
         public async Task<IActionResult> GetAccommodations()
         {
             //return await _context.Customers.ToListAsync();
-            var accommodations = await _unitOfWork.Accommodations.GetAll(includes: q => q.Include(x =>x.FligAcco).Include(x => x.Trip));
+            var accommodations = await _unitOfWork.Accommodations.GetAll(includes: q => q.Include(x => x.Trip).ThenInclude(h => h.Customer).Include(x => x.Payment));
             return Ok(accommodations);
         }
 

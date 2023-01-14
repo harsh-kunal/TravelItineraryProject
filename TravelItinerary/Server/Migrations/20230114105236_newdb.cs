@@ -54,12 +54,12 @@ namespace TravelItinerary.Server.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Alias = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Alias = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Gender = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -219,7 +219,7 @@ namespace TravelItinerary.Server.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PaymentType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PaymentAmount = table.Column<int>(type: "int", nullable: false),
+                    PaymentAmount = table.Column<double>(type: "float", nullable: false),
                     PaymentDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CustomerId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -258,22 +258,108 @@ namespace TravelItinerary.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Accommodations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AccommodationName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AccommodationType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AccommodationFees = table.Column<double>(type: "float", nullable: false),
+                    AccommodationLocation = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AccommodationRating = table.Column<double>(type: "float", nullable: false),
+                    TripId = table.Column<int>(type: "int", nullable: true),
+                    MyProperty = table.Column<int>(type: "int", nullable: false),
+                    PaymentId = table.Column<double>(type: "float", nullable: false),
+                    PaymentId1 = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Accommodations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Accommodations_Payments_PaymentId1",
+                        column: x => x.PaymentId1,
+                        principalTable: "Payments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Accommodations_Trips_TripId",
+                        column: x => x.TripId,
+                        principalTable: "Trips",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "FligAccos",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PaymentId = table.Column<int>(type: "int", nullable: false)
+                    PaymentId = table.Column<double>(type: "float", nullable: false),
+                    PaymentId1 = table.Column<int>(type: "int", nullable: true),
+                    TripId = table.Column<int>(type: "int", nullable: true),
+                    FlighAccoFees = table.Column<double>(type: "float", nullable: false),
+                    Airlines = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AccommodationName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DestinationFrom = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DestinationTo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_FligAccos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FligAccos_Payments_PaymentId",
-                        column: x => x.PaymentId,
+                        name: "FK_FligAccos_Payments_PaymentId1",
+                        column: x => x.PaymentId1,
                         principalTable: "Payments",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_FligAccos_Trips_TripId",
+                        column: x => x.TripId,
+                        principalTable: "Trips",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Flights",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Airlines = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DestinationFrom = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DestinationTo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FlighFees = table.Column<double>(type: "float", nullable: false),
+                    Baggage = table.Column<int>(type: "int", nullable: false),
+                    CabinClass = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FlightRating = table.Column<double>(type: "float", nullable: false),
+                    TripId = table.Column<int>(type: "int", nullable: true),
+                    PaymentId = table.Column<double>(type: "float", nullable: false),
+                    PaymentId1 = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Flights", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Flights_Payments_PaymentId1",
+                        column: x => x.PaymentId1,
+                        principalTable: "Payments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Flights_Trips_TripId",
+                        column: x => x.TripId,
+                        principalTable: "Trips",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -295,75 +381,6 @@ namespace TravelItinerary.Server.Migrations
                         principalTable: "Trips",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Accommodations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AccommodationName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AccommodationType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AccommodationFees = table.Column<int>(type: "int", nullable: false),
-                    AccommodationLocation = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AccommodationRating = table.Column<int>(type: "int", nullable: false),
-                    FligAccoId = table.Column<int>(type: "int", nullable: false),
-                    TripId = table.Column<int>(type: "int", nullable: true),
-                    MyProperty = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Accommodations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Accommodations_FligAccos_FligAccoId",
-                        column: x => x.FligAccoId,
-                        principalTable: "FligAccos",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Accommodations_Trips_TripId",
-                        column: x => x.TripId,
-                        principalTable: "Trips",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Flights",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Airlines = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DestinationFrom = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DestinationTo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FlighFees = table.Column<int>(type: "int", nullable: false),
-                    Baggage = table.Column<int>(type: "int", nullable: false),
-                    CabinClass = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FlightRating = table.Column<int>(type: "int", nullable: false),
-                    FligAccoId = table.Column<int>(type: "int", nullable: false),
-                    TripId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Flights", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Flights_FligAccos_FligAccoId",
-                        column: x => x.FligAccoId,
-                        principalTable: "FligAccos",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Flights_Trips_TripId",
-                        column: x => x.TripId,
-                        principalTable: "Trips",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -395,14 +412,14 @@ namespace TravelItinerary.Server.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "ad2bcf0c-20db-474f-8407-5a6b159518ba", "ec7c3bf9-f6e1-4e10-8bb9-985c1b13f6a1", "Administrator", "ADMINISTRATOR" },
-                    { "bd2bcf0c-20db-474f-8407-5a6b159518bb", "b665d945-2f40-481e-a2aa-1fb82f8c1a90", "User", "USER" }
+                    { "ad2bcf0c-20db-474f-8407-5a6b159518ba", "34e03047-a05d-428a-9d9b-492d223cd993", "Administrator", "ADMINISTRATOR" },
+                    { "bd2bcf0c-20db-474f-8407-5a6b159518bb", "83a6e101-3b63-4c1f-9ecd-4b448e64bc82", "User", "USER" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "3781efa7-66dc-47f0-860f-e506d04102e4", 0, "f60876b3-3f7c-4ea9-9468-c20fed17fc7b", "admin@localhost.com", false, "Admin", "User", false, null, "ADMIN@LOCALHOST.COM", "ADMIN", "AQAAAAEAACcQAAAAEK7CN2ox6X4JLnsG0+qUIh3WZNCa5yCcOXXVqbpX2ByybeIl2hV03Bn6cPsmjZHjeA==", null, false, "f3468753-5f77-4803-857f-51998953ac32", false, "Admin" });
+                values: new object[] { "3781efa7-66dc-47f0-860f-e506d04102e4", 0, "22ca35e2-75c8-46e9-b363-ddccbdee8c0d", "admin@localhost.com", false, "Admin", "User", false, null, "ADMIN@LOCALHOST.COM", "ADMIN", "AQAAAAEAACcQAAAAEG3wTUrv91VZfn4zQj2saBs7d/uVkRU5K0CnVC774HvH8sGlMpZsa19uvsYnSy1IoA==", null, false, "1c99a8c0-a930-49c2-852d-1921cc98d443", false, "Admin" });
 
             migrationBuilder.InsertData(
                 table: "Customers",
@@ -419,9 +436,9 @@ namespace TravelItinerary.Server.Migrations
                 values: new object[] { "ad2bcf0c-20db-474f-8407-5a6b159518ba", "3781efa7-66dc-47f0-860f-e506d04102e4" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Accommodations_FligAccoId",
+                name: "IX_Accommodations_PaymentId1",
                 table: "Accommodations",
-                column: "FligAccoId");
+                column: "PaymentId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Accommodations_TripId",
@@ -484,14 +501,19 @@ namespace TravelItinerary.Server.Migrations
                 column: "ScheduleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FligAccos_PaymentId",
+                name: "IX_FligAccos_PaymentId1",
                 table: "FligAccos",
-                column: "PaymentId");
+                column: "PaymentId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Flights_FligAccoId",
+                name: "IX_FligAccos_TripId",
+                table: "FligAccos",
+                column: "TripId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Flights_PaymentId1",
                 table: "Flights",
-                column: "FligAccoId");
+                column: "PaymentId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Flights_TripId",
@@ -556,6 +578,9 @@ namespace TravelItinerary.Server.Migrations
                 name: "Events");
 
             migrationBuilder.DropTable(
+                name: "FligAccos");
+
+            migrationBuilder.DropTable(
                 name: "Flights");
 
             migrationBuilder.DropTable(
@@ -571,13 +596,10 @@ namespace TravelItinerary.Server.Migrations
                 name: "Schedules");
 
             migrationBuilder.DropTable(
-                name: "FligAccos");
+                name: "Payments");
 
             migrationBuilder.DropTable(
                 name: "Trips");
-
-            migrationBuilder.DropTable(
-                name: "Payments");
 
             migrationBuilder.DropTable(
                 name: "Customers");

@@ -1,0 +1,113 @@
+﻿@inject HttpClient _client
+
+<EditForm Model="@flight" OnValidSubmit="@OnValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <fieldset disabled="@Disabled">
+        <div class="form-group">
+            <label> Airlines: </label>
+            <div>
+                <InputText @bind-Value="@flight.Airlines" class="form-control" />
+                <ValidationMessage For="@(() => flight.Airlines)" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label> Origin: </label>
+            <div>
+                <InputText @bind-Value="@flight.DestinationFrom" class="form-control" />
+                <ValidationMessage For="@(() => flight.DestinationFrom)" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Destination: </label>
+            <div>
+                <InputSelect @bind-Value="flight.TripId" class="form-control">
+                    <option value=""> --Select Destination-- </option>
+                    @if (Trips != null)
+                    {
+                        foreach (var trip in Trips)
+                        {
+                            <option value="@trip.Id">@trip.Destination</option>
+                        }
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => flight.TripId)" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label> Journey Start Date: </label>
+            <div>
+                <InputDate @bind-Value="@flight.StartDate" class="form-control" />
+                <ValidationMessage For="@(() => flight.StartDate)" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label> Journey End Date: </label>
+            <div>
+                <InputDate @bind-Value="@flight.EndDate" class="form-control" />
+                <ValidationMessage For="@(() => flight.EndDate)" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label> Amount: </label>
+            <div>
+                <InputNumber @bind-Value="@flight.FlighFees" class="form-control" />
+                <ValidationMessage For="@(() => flight.FlighFees)" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Number of baggage: </label>
+            <div>
+                <InputNumber @bind-Value="@flight.Baggage" class="form-control" />
+                <ValidationMessage For="@(() => flight.Baggage)" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Cabin Class: </label>
+            <div>
+                <InputText @bind-Value="@flight.CabinClass" class="form-control" />
+                <ValidationMessage For="@(() => flight.CabinClass)" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label> Flight Rating (Under 5): </label>
+            <div>
+                <InputNumber @bind-Value="@flight.FlightRating" class="form-control" />
+                <ValidationMessage For="@(() => flight.FlightRating)" />
+            </div>
+        </div>
+    </fieldset>
+
+    @if (!Disabled)
+    {
+        <button type="submit" class="btn btn-success btn-block">
+            @ButtonText
+        </button>
+
+    }
+    <BackToList Target="flights" />
+</EditForm>
+
+@code {
+    [Parameter] public bool Disabled { get; set; } = false;
+    [Parameter] public Flight flight { get; set; }
+    [Parameter] public string ButtonText { get; set; } = "Save";
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+
+    private IList<Trip> Trips;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Trips = await _client.GetFromJsonAsync<List<Trip>>($"{Endpoints.TripsEndpoint}");
+    }
+
+}

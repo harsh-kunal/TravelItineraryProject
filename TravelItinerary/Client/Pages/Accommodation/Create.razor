@@ -1,0 +1,26 @@
+﻿@page "/accommodations/create/"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3 class="card-title">Create New Hotel</h3>
+<hr />
+<br />
+
+<FormComponent ButtonText="Create Hotel" accommodation="accommodation" OnValidSubmit="@CreateAccommodation" />
+
+@code {
+    Accommodation accommodation = new Accommodation();
+
+    private IList<Trip> Trips;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Trips = await _client.GetFromJsonAsync<List<Trip>>($"{Endpoints.TripsEndpoint}");
+    }
+
+    private async Task CreateAccommodation()
+    {
+        await _client.PostAsJsonAsync(Endpoints.AccommodationsEndpoint, accommodation);
+        _navManager.NavigateTo("/accommodations/");
+    }
+}

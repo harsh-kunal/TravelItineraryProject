@@ -2,13 +2,15 @@
 @inject HttpClient _client
 @inject IJSRuntime js
 @attribute [Authorize]
+@inject HttpInterceptorService _interceptor
+@implements IDisposable
 
-<h3 class="card-title">Payment Makes</h3>
+<h3 class="card-title">Payments</h3>
 <br />
 
 <a href="/payments/create" class="btn btn-secondary">
     <span class="oi oi-plus"></span>
-    Create New Payments
+    Create New Payment
 </a>
 <br />
 <br />
@@ -19,11 +21,12 @@
 }
 else
 {
-    <table class="table table-responsive">
+    <table class="table table-responsive" id="paymentsTable">
         <thead>
             <tr>
-                <th>Amount</th>
-                <th>Type</th>
+                <th>Customer Name</th>
+                <th>Transaction Amount</th>
+                <th>Transaction Type</th>
                 <th>Transaction Date</th>
                 <th>Actions</th>
             </tr>
@@ -32,9 +35,10 @@ else
             @foreach (var payment in Payments)
             {
                 <tr>
+                    <td>@payment.Customer.Name</td>
                     <td>@payment.PaymentAmount</td>
                     <td>@payment.PaymentType</td>
-                    <td>@payment.PaymentDate</td>
+                    <td>@payment.PaymentDate.ToString("dd MMMM yyyy")</td>
                     <td>
                         <a href="/payments/view/@payment.Id" class="btn btn-primary">
                             <span class="oi oi-book"></span>
@@ -58,6 +62,7 @@ else
 
     protected async override Task OnInitializedAsync()
     {
+        _interceptor.MonitorEvent();
         Payments = await _client.GetFromJsonAsync<List<Payment>>($"{Endpoints.PaymentsEndpoint}");
     }
 
@@ -70,9 +75,17 @@ else
             await _client.DeleteAsync($"{Endpoints.PaymentsEndpoint}/{paymentId}");
             await OnInitializedAsync();
         }
-
-
     }
 
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("AddDataTable", "#paymentsTable");
+    }
+
+    public void Dispose()
+    {
+        _interceptor.DisposeEvent();
+        js.InvokeVoidAsync("DataTablesDispose", "#paymentsTable");
+    }
 }
 

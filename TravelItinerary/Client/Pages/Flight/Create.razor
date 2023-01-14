@@ -1,0 +1,27 @@
+﻿@page "/flights/create/"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3 class="card-title">Create New Flight</h3>
+<hr />
+<br />
+
+<FormComponent ButtonText="Create Flight" flight="flight" OnValidSubmit="@CreateFlight" />
+
+@code {
+    Flight flight = new Flight();
+
+    private IList<Trip> Trips;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Trips = await _client.GetFromJsonAsync<List<Trip>>($"{Endpoints.TripsEndpoint}");
+    }
+
+    private async Task CreateFlight()
+    {
+        await _client.PostAsJsonAsync(Endpoints.FlightsEndpoint, flight);
+        _navManager.NavigateTo("/flights/");
+    }
+}
+
