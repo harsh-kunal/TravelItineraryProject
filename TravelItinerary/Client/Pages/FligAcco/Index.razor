@@ -46,7 +46,7 @@ else
                     <td>@fligacco.Trip.Destination</td>
                     <td>@fligacco.AccommodationName</td>
                     <td>@fligacco.StartDate.ToString("dd MMMM yyyy")</td>
-                    <td>@fligacco.EndDate.ToString("dd MMMM yyyy")</td>
+                    <td>@(fligacco.EndDate != null ? fligacco.EndDate.Value.ToString("dd MMMM yyyy") : "Determined")</td>
                     <td>@fligacco.FlighAccoFees</td>
                     <td>
                         <a href="/fligaccos/view/@fligacco.Id" class="btn btn-primary">

@@ -24,7 +24,6 @@ else
     <table class="table table-responsive" id="customersTable">
         <thead>
             <tr>
-                <th>Customer Id</th>
                 <th>First Name</th>
                 <th>Second Name</th>
                 <th>Phone Number</th>
@@ -37,7 +36,6 @@ else
             @foreach (var customer in Customers)
             {
                 <tr>
-                    <td>@customer.Id</td>
                     <td>@customer.Name</td>
                     <td>@customer.Alias</td>
                     <td>@customer.PhoneNumber</td>

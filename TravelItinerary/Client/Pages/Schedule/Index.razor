@@ -38,7 +38,7 @@ else
                     <td>@schedule.Trip.Customer.Name</td>
                     <td>@schedule.Trip.Destination</td>
                     <td>@schedule.StartDate.Date.ToString("dd MMMM yyyy")</td>
-                    <td>@schedule.EndDate.Date.ToString("dd MMMM yyyy")</td>
+                    <td>@(schedule.EndDate != null ? schedule.EndDate.Value.ToString("dd MMMM yyyy") : "Determined")</td>
                     <td>
                         <a href="/schedules/view/@schedule.Id" class="btn btn-primary">
                             <span class="oi oi-book"></span>

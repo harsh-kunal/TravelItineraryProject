@@ -31,7 +31,7 @@ namespace TravelItinerary.Server.Controllers
         public async Task<IActionResult> GetFligAccos()
         {
             //return await _context.Customers.ToListAsync();
-            var fligaccos = await _unitOfWork.FligAccos.GetAll(includes: q => q.Include(x => x.Trip).ThenInclude(h => h.Customer).Include(h => h.Payment));
+            var fligaccos = await _unitOfWork.FligAccos.GetAll(includes: q => q.Include(x => x.Trip).ThenInclude(h => h.Customer));
             return Ok(fligaccos);
         }
 

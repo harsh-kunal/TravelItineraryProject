@@ -44,7 +44,7 @@ else
                     <td>@flight.DestinationFrom</td>
                     <td>@flight.Trip.Destination</td>
                     <td>@flight.StartDate.ToString("dd MMMM yyyy")</td>
-                    <td>@flight.EndDate.ToString("dd MMMM yyyy")</td>
+                    <td>@(flight.EndDate != null ? flight.EndDate.Value.ToString("dd MMMM yyyy") : "Determined")</td>
                     <td>@flight.FlighFees</td>
                     <td>
                         <a href="/flights/view/@flight.Id" class="btn btn-primary">

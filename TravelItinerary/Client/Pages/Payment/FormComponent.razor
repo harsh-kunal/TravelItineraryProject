@@ -23,6 +23,14 @@
         </div>
 
         <div class="form-group">
+            <label>Transaction Amount: </label>
+            <div>
+                <InputNumber @bind-Value="@payment.PaymentAmount" class="form-control" />
+                <ValidationMessage For="@(() => payment.PaymentAmount)" />
+            </div>
+        </div>
+
+        <div class="form-group">
             <label>Transaction Type: </label>
             <div>
                 <InputText @bind-Value="@payment.PaymentType" class="form-control" />
@@ -64,10 +72,12 @@
     [Parameter] public EventCallback OnValidSubmit { get; set; }
 
     private IList<Customer> Customers;
+    private IList<Trip> Trips;
 
     protected async override Task OnInitializedAsync()
     {
         Customers = await _client.GetFromJsonAsync<List<Customer>>($"{Endpoints.CustomersEndpoint}");
+        Trips = await _client.GetFromJsonAsync<List<Trip>>($"{Endpoints.TripsEndpoint}");
     }
 
 }
