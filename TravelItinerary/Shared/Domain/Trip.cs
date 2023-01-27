@@ -23,6 +23,7 @@ namespace TravelItinerary.Shared.Domain
         [Required]
         public int? CustomerId { get; set; }
         public virtual Customer Customer { get; set; }
+        public virtual List<Payment> Payments { get; set; }
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (EndDate != null)

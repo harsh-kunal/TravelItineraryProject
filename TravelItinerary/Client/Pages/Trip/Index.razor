@@ -38,7 +38,7 @@ else
                 <tr>
                     <td>@trip.Customer.Name</td>
                     <td>@trip.StartDate.Date.ToString("dd MMMM yyyy")</td>
-                    <td>@(trip.EndDate != null ? trip.EndDate.Value.ToString("dd MMMM yyyy") : "Determined")</td>
+                    <td>@(trip.EndDate != null ? trip.EndDate.Value.ToString("dd MMMM yyyy") : "To be Determined")</td>
                     <td>@trip.Destination</td>
                     <td>@trip.Pax</td>
                     <td>

@@ -395,14 +395,18 @@ namespace TravelItinerary.Server.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "ad2bcf0c-20db-474f-8407-5a6b159518ba", "67a31276-9940-4f69-8879-c030f75f1ed3", "Administrator", "ADMINISTRATOR" },
-                    { "bd2bcf0c-20db-474f-8407-5a6b159518bb", "37c4bdbe-5028-434a-8291-04a9150ea5ef", "User", "USER" }
+                    { "ad2bcf0c-20db-474f-8407-5a6b159518ba", "163f8fd1-ae70-4aa4-b52b-91b9739e359f", "Administrator", "ADMINISTRATOR" },
+                    { "bd2bcf0c-20db-474f-8407-5a6b159518bb", "6cd338d7-738b-4163-af62-65a97fc9563d", "User", "USER" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "3781efa7-66dc-47f0-860f-e506d04102e4", 0, "aaaab665-0c7b-46a3-a0ae-d71ec67e1ef9", "admin@localhost.com", false, "Admin", "User", false, null, "ADMIN@LOCALHOST.COM", "ADMIN", "AQAAAAEAACcQAAAAEIVAcVNN60JoYxnQkznGOeWVYzaJGa/dD7ho4HEIkuXsfy5SBYB7HVtHDoVYFlTn+Q==", null, false, "4f0cafb8-52d4-4128-94f8-4abf262c4437", false, "Admin" });
+                values: new object[,]
+                {
+                    { "9cafb438-e993-4c70-ab6a-e89f8a32d312", 0, "306e9bb5-899e-4937-a4a7-f5d4c9fd731a", "admininstrartor@localhost.com", false, "Admin", "Localhost", false, null, null, "Administrator", "P@ssword", null, false, "ff044815-8691-4783-9d50-475a3a69506d", false, "Admin" },
+                    { "3781efa7-66dc-47f0-860f-e506d04102e4", 0, "e5c2da73-937b-42de-a959-64c8d38a6f63", "admin@localhost.com", false, "Admin", "User", false, null, "ADMIN@LOCALHOST.COM", "ADMIN", "AQAAAAEAACcQAAAAEOhmH/0lwa+CvXA/7fy3jmpqx4B5HqpY81Xz4t7KzXELiUvQmk6vgF3MZR6MdUC/Wg==", null, false, "3b27a85c-1992-4c5d-a8f5-125a7e5eaf0d", false, "Admin" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Customers",

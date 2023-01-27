@@ -28,12 +28,14 @@ namespace TravelItinerary.Server.Data
         public DbSet<Flight> Flights { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<FligAcco> FligAccos { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
             builder.ApplyConfiguration(new CustomerSeedConfiguration());
+            builder.ApplyConfiguration(new AccountSeedConfiguration());
             builder.ApplyConfiguration(new RoleSeedConfiguration());
             builder.ApplyConfiguration(new UserRoleSeedConfiguration());
             builder.ApplyConfiguration(new UserSeedConfiguration());

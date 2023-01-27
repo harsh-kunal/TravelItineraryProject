@@ -17,5 +17,6 @@ namespace TravelItinerary.Client.Static
         public static readonly string FligAccosEndpoint = $"{Prefix}/fligaccos";
         public static readonly string AccommodationsEndpoint = $"{Prefix}/accommodations";
         public static readonly string SchedulesEndpoint = $"{Prefix}/schedules";
+        public static readonly string AccountsEndpoint = $"{Prefix}/accounts";
     }
 }
